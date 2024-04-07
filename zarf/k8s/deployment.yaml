@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: #{NAME}#-deploy
+  namespace: #{NS}#
+spec:
+  replicas: #{REPL}#
+  selector:
+    matchLabels:
+      app: #{NAME}#
+  template:
+    metadata:
+      labels:
+        app: #{NAME}#
+    spec:
+      serviceAccountName: #{SA}#
+      containers:
+      - name: #{NAME}#
+        image: #{CIMAGE}#
+        imagePullPolicy: Always
+        ports:
+        - containerPort: #{CPORT}#
+        livenessProbe:
+          httpGet:
+            path: /commerce/manage-bombink/healthz
+            port: #{CPORT}#
+        readinessProbe:
+          httpGet:
+            path: /commerce/manage-bombink/healthz
+            port: #{CPORT}#
+        resources:
+          limits:
+            cpu: 100m
+            memory: 128Mi
+          requests:
+            cpu: 80m
+            memory: 64Mi
+        securityContext:
+          capabilities:
+            drop:
+              - ALL
+          runAsNonRoot: true
+          runAsUser: 10001
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+        env:
+          - name: ENV
+            value: #{ENV}#
+          - name: API_REST_PORT
+            value: !!integer #{API_REST_PORT}#
+          - name: API_REST_BASE_URL
+            value: #{API_REST_BASE_URL}#
+          - name: AWS_SECRET_MANAGER_REGION
+            value: #{AWS_SECRET_MANAGER_REGION}#
+          - name: MKS_SECRET_ID
+            value: #{MKS_SECRET_ID}#
+          - name: MKS_SECRETMS_ADM_MISIONS_KAFKA_SERVER_ID
+            value: #{MS_ADM_MISIONS_KAFKA_SERVER}#
+          - name: KAFKA_GROUP_ID
+            value: #{KAFKA_GROUP_ID}#
+          - name: MS_ADM_MISIONS_TOPIC
+            value: #{MS_ADM_MISIONS_TOPIC}#
+            

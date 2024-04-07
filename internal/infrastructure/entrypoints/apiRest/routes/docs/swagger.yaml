@@ -1,0 +1,65 @@
+basePath: /commerce/manage-bombink
+definitions:
+  api.Data:
+    properties:
+      code:
+        example: IDMissionNoValid
+        type: string
+    type: object
+  api.RetomaRegistroResponseErrorInexperado:
+    properties:
+      data:
+        $ref: '#/definitions/api.Data'
+      message:
+        example: Ocurrio un error inexperado
+        type: string
+    type: object
+  dtos.BombinkResponse:
+    properties:
+      data: {}
+      message:
+        type: string
+    type: object
+host: localhost:1323
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: Service to connect users
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Bombink End Points
+  version: "1.0"
+paths:
+  /commerce/manage-bombink/user/create:
+    post:
+      consumes:
+      - application/json
+      description: Service to activate missions
+      parameters:
+      - description: Save user
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.BombinkResponse'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: user guardado con éxito
+          schema:
+            $ref: '#/definitions/dtos.BombinkResponse'
+        "500":
+          description: Cuando ocurre un error inexperado
+          schema:
+            $ref: '#/definitions/api.RetomaRegistroResponseErrorInexperado'
+      summary: Service to activate missions
+      tags:
+      - ActivateUser
+schemes:
+- http
+swagger: "2.0"
